@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import pyttsx3
 
 
 
@@ -220,6 +221,38 @@ def show_algorithm_info():
 
     messagebox.showinfo("Algorithm Explanation", info_text)
 
+def speak_algorithm():
+    algo = algo_choice.get()
+
+    if not algo:
+        messagebox.showerror("Error", "Select an Algorithm First")
+        return
+
+    engine = pyttsx3.init()
+    engine.setProperty('rate', 160)  # speaking speed
+
+    if algo == "FIFO":
+        text = (
+            "First In First Out algorithm replaces the oldest page in memory. "
+            "It follows queue principle. The page that entered first will be removed first."
+        )
+
+    elif algo == "LRU":
+        text = (
+            "Least Recently Used algorithm replaces the page that has not been used "
+            "for the longest period of time. It uses past reference history."
+        )
+
+    elif algo == "Optimal":
+        text = (
+            "Optimal page replacement replaces the page that will not be used "
+            "for the longest time in the future. It produces minimum page faults "
+            "but is not practical in real systems."
+        )
+
+    engine.say(text)
+    engine.runAndWait()    
+
 
 # ---------- WINDOW DESIGN ----------
 
@@ -300,6 +333,15 @@ info_btn = tk.Button(button_frame,
                      font=("Segoe UI", 12, "bold"),
                      width=10)
 info_btn.grid(row=0, column=3, padx=10)
+
+audio_btn = tk.Button(button_frame,
+                      text="🔊 Audio Explain",
+                      command=speak_algorithm,
+                      bg="#8b5cf6",
+                      fg="white",
+                      font=("Segoe UI", 12, "bold"),
+                      width=15)
+audio_btn.grid(row=2, column=1, padx=10)
 
 
 
